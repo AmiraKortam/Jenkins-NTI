@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Checkout') {
       steps {
-        git branch: 'main', credentialsId: 'jenkins-github', url: 'https://github.com/AmiraKortam/Jenkins-NTI.git'
+        git branch: 'main', url: 'https://github.com/AmiraKortam/Jenkins-NTI.git'
       }
     }
     stage('Build Docker Image') {
