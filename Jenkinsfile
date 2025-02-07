@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'docker:latest'  
-      label 'my-node'
-    }
-  }
+  agent any
   stages {
     stage('Checkout') {
       steps {
@@ -14,14 +9,16 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         script {
-          docker.build('test-jenkins-image', '.')
+          docker.image('docker:latest').inside {
+            docker.build('test-jenkins-image', '.')
+          }
         }
       }
     }
     stage('Push Docker Image') {
       steps {
         script {
-          docker.withRegistry('https://amiramohammed/test-jenkins', 'docker-hub-credentials') {
+          docker.withRegistry('https://hub.docker.com/repository/docker/amiramohammed/test-jenkins/general', 'docker-hub-credentials') {
             docker.image('test-jenkins-image').push('latest')
           }
         }
