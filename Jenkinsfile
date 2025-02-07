@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git 'https://github.com/AmiraKortam/Jenkins-NTI.git'
+        git branch: 'main', url: 'https://github.com/AmiraKortam/Jenkins-NTI.git'
       }
     }
     stage('Build Docker Image') {
