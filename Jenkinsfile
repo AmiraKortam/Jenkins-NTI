@@ -1,6 +1,11 @@
 pipeline {
   agent any
   stages {
+    stage('Cleanup') {
+      steps {
+        deleteDir()
+      }
+    }
     stage('Checkout') {
       steps {
         git branch: 'main', credentialsId: 'jenkins-github', url: 'https://github.com/AmiraKortam/Jenkins-NTI.git'
