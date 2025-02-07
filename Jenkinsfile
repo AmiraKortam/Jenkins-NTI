@@ -1,33 +1,33 @@
 pipeline {
-  agent any
-  stages {
-    stage('Cleanup') {
-      steps {
-        deleteDir()
-      }
+    agent any
+    environment {
+        WORKSPACE = "/var/jenkins_home/workspace/Jenkins-NTI"
     }
-    stage('Checkout') {
-      steps {
-        git branch: 'main', url: 'https://github.com/AmiraKortam/Jenkins-NTI.git'
-      }
-    }
-    stage('Build Docker Image') {
-      steps {
-        script {
-          docker.image('docker:latest').inside {
-            docker.build('test-jenkins-image', '.')
-          }
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    sh 'pwd'
+                    sh 'ls -l'
+                    sh 'git rev-parse --is-inside-work-tree || echo "Not a git repository!"'
+                }
+            }
         }
-      }
-    }
-    stage('Push Docker Image') {
-      steps {
-        script {
-          docker.withRegistry('https://hub.docker.com/repository/docker/amiramohammed/test-jenkins/general', 'docker-hub-credentials') {
-            docker.image('test-jenkins-image').push('latest')
-          }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build('image1', '.')
+                }
+            }
         }
-      }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://hub.docker.com/repository/docker/amiramohammed/test-jenkins/general', 'docker-hub-credentials') {
+                        docker.image('image1').push('latest')
+                    }
+                }
+            }
+        }
     }
-  }
 }
